@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -43,7 +44,12 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex:1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
+
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
     .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
@@ -56,8 +62,23 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      flex:1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
+    .panel > *:first-child{
+      transform: translateY(-100%);
+    }
+    .panel.open-active > *:first-child{
+      transform: translateY(0%);
+    }
+    .panel > *:last-child{
+      transform: translateY(+100%);
+    }
+    .panel.open-active > *:last-child{
+      transform: translateY(0%);
+    }
     .panel p {
       text-transform: uppercase;
       font-family: 'Amatic SC', cursive;
@@ -71,6 +92,7 @@
 
     .panel.open {
       font-size: 40px;
+      flex:5;
     }
 
   </style>
@@ -105,7 +127,19 @@
   </div>
 
   <script>
-
+    const panelslist=document.querySelectorAll(".panel");
+    panelslist.forEach(panel => panel.addEventListener("click",expandpanel));
+    panelslist.forEach(panel => panel.addEventListener("transitionend",toggleopenactive));
+    function expandpanel(e){
+      panelslist.forEach(panel=>panel.classList.contains("open")&&panel!=this?panel.classList.toggle("open"):null);//additional
+      this.classList.toggle('open');
+      console.log(this.classList);
+    }
+    function toggleopenactive(e){
+      if(e.propertyName.includes("flex")){
+        this.classList.toggle("open-active");
+      }
+    }
   </script>
 
 
